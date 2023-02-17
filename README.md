@@ -20,4 +20,6 @@ Also, to run the python script, it is advised to have the cais\_zmq.py script in
 
 
 ## Parameters and Scenario
-![](new_search_parameters.jpg)
+The used parameters are directly used in the control scripts. If the above instructions are followed properly, one should get everything to work.
+
+*Note:* The results would defer because of the non-determinism of the meta-heuristics used in the implementation.
