@@ -1,4 +1,4 @@
-# SToCAIS
+# ROTTDAMS - Risk-driven Online Testing and Test Case Diversity Analysis for ML-enabled Critical Systems
 This project explores the safety space of a collaborative AI system (CAIS). The main simulation is cais\_scenario.ttt and the control scripts are named cais\_zmq\_\[AlgoCode].py.<br>
 
 The remote api used in the project is zmq (available [here](https://www.coppeliarobotics.com/helpFiles/en/zmqRemoteApiOverview.htm)) and must be installed to run the project. The api allows us to interact with the simulation from an external script.<br>
