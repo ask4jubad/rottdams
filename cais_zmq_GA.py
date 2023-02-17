@@ -107,28 +107,12 @@ class Simulation(FloatProblem):
         simdata = []
         startTime = time.time()
 
-        '''# sim.scripttype_mainscript (0)
-        sim.scripttype_childscript (1)
-        sim.scripttype_addonscript (2)
-        sim.scripttype_customizationscript (6)
-        sim.scripttype_sandboxscript (8)'''
         
 
         stateA,x,difA,specA = sim.getLightParameters(lightHandleA)
 
-
-        # stateB,_,difB,specB = sim.getLightParameters(lightHandleB)
-        # # print(stateB, difB, specB)
-
-        # #turn off lights A and B after the 3rd and 7th runs respectively
-
-        # # if n == 3:
-        # sim.setLightParameters(lightHandleA, 1 , None, [difA1, difA2, difA3], [0,0,0])
         sim.setLightParameters(lightHandleA, 1 , [0, 0, 0], [difA1, difA2, difA3], [0,0,0])
 
-        # sim.callScriptFunction("setwaitTime@LBR_iiwa_7_R800",sim.scripttype_childscript,timestep)
-        # sim.callScriptFunction("setwaitTime@Bill",sim.scripttype_childscript,timestepprime)
-        
         sim.setInt32Signal("waitTimeBill", timestepprime)
         sim.setInt32Signal("waitTimeRobot", timestep)
         sim.setFloatSignal("velBill", velprime)
@@ -137,32 +121,9 @@ class Simulation(FloatProblem):
         time.sleep(2)
 
 
-        # time.sleep(2)
-        # sim.callScriptFunction("setParameters@Bill",sim.scripttype_childscript,timestepprime, velprime)   
-        # sim.callScriptFunction("setParameters@LBR_iiwa_7_R800",sim.scripttype_childscript,timestep, vel)
-
-
-        # p1 = Process(target=sim.callScriptFunction("setwaitTime@LBR_iiwa_7_R800",sim.scripttype_childscript,timestep))
-        # p1.start()
-        # p2 = Process(target= sim.callScriptFunction("setwaitTime@Bill",sim.scripttype_childscript,timestepprime) )
-        # p2.start()
-        # p1.join()
-        # p2.join()
-
         dist = np.Inf
 
-     
-        
-        # print(sim.callScriptFunction("getVelocity@LBR_iiwa_7_R800",sim.scripttype_childscript,))
-
-
-        while sim.getSimulationState() != sim.simulation_stopped:
-        # while sim.getSimulationTime() < 60:
-        # while (dist > 0.0001) and (sim.getSimulationTime() < 7): #time
-
-        #get vision sensor capture. Default way provided by CoppeliaSim
-            # img, resX, resY = sim.getVisionSensorCharImage(visionSensorHandle)
-            
+        while sim.getSimulationState() != sim.simulation_stopped:            
 
             img, resX, resY = sim.getVisionSensorCharImage(visionSensorHandle)
 
@@ -176,70 +137,6 @@ class Simulation(FloatProblem):
             #convert from BGR to RBG
             img = cv2.flip(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), 0)
             
-            # sim.saveImage(img, [resX, resY] ,0, "/home/jubril/Downloads/CoppeliaSim/programming/zmqRemoteApi/clients/python/RACAIS/test.jpg", 100)
-            
-        
-
-            
-            # img = img.convert()
-            # print(sim.getRealTimeSimulation())
-            # img.save("image.jpg")
-            # print(sim.getRealTimeSimulation())
-            # img = np.frombuffer(img, dtype=np.uint8).reshape(resX, resY, 3)
-
-            # detector = ObjectDetection()
-            # # detector.setModelTypeAsRetinaNet()
-            # detector.setModelTypeAsYOLOv3()
-            # # detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.1.0.h5"))
-            # detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
-            # detector.loadModel()
-            # # detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image.jpg"), output_image_path=os.path.join(execution_path , "imagenew.jpg"))
-            # # detections = detector.detectObjectsFromImage(input_image=img, output_image_path='')
-            # returned_image, detections, extracted_objects = detector.detectObjectsFromImage(input_image="image.jpg", output_type="array", extract_detected_objects=True, minimum_percentage_probability=30)
-
-            # print(sim.getRealTimeSimulation())
-            '''In CoppeliaSim images are left to right (x-axis), and bottom to top (y-axis)
-            (consistent with the axes of vision sensors, pointing Z outwards, Y up)
-            and color format is RGB triplets, whereas OpenCV uses BGR:'''
-            
-            # cv2.imshow('Detected', img)
-            # # img = Image.fromarray(img, 'RGB')
-            # # img.save("image.jpg")
-            # cv2.waitKey(3)
-            # client.step()
-            # if os.path.exists("image.jpg"):
-
-            # camera = cv2.VideoCapture(visionSensorHandle)
-            # detector = VideoObjectDetection()
-            # detector.setModelTypeAsYOLOv3()
-            # detector.setModelPath(os.path.join(execution_path , "yolo.h5"))
-            # detector.loadModel()
-
-            # video_path = detector.detectObjectsFromVideo(input_file_path=os.path.join( execution_path, "traffic-mini.mp4"),
-            #                         output_file_path=os.path.join(execution_path, "traffic_mini_detected_1")
-            #                         , frames_per_second=29, log_progress=True)
-
-            # video_path = detector.detectObjectsFromVideo(camera_input=camera,
-            #                                 output_file_path=os.path.join(execution_path, "camera_detected_1")
-            #                                 , frames_per_second=29, log_progress=True)
-            
-            # print(video_path)
-            
-            # print(type(returned_image))
-            # # cv2.imshow('Detected', returned_image)
-            # img = cv2.imread("image.jpg")
-
-            # cv2.imshow("read", img)
-            # cv2.waitKey(3)
-            # client.step()
-
-            # img = cv2.flip(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), 0)
-            # img = np.array(img)
-   
-            # lower = np.array([0, 51, 0])
-            # 126, 116, 104
-            
-            
             lower = np.array([100, 100, 90])   
             upper = np.array([188, 170, 147])
 
@@ -249,16 +146,12 @@ class Simulation(FloatProblem):
             # print(mask)
 
             result, distance_left, objectPair = sim.checkDistance(simTip, human_hand_right, 0)
-
-            #determine if the robot is moving at time of collision (or when evaluation happens)
-            #if robot is moving give ctual value, if not, return large value
-            #create check velocity functuion in child script and call here
-            #make hazards less if experiment returns large hazard size
-            jointspeedRobot = sim.getFloatSignal("jointvelRobot")
-            if jointspeedRobot is None:
-                jointspeedRobot = 0
-            # print(jointspeedRobot)
+			
+			jointspeedRobot = sim.getFloatSignal("jointvelRobot")
             
+			if jointspeedRobot is None:
+                jointspeedRobot = 0
+           
 
             if cv2.countNonZero(mask) > 0:
             #
@@ -268,19 +161,7 @@ class Simulation(FloatProblem):
             else:
         
                 output = cv2.bitwise_and(img, img, mask = mask)
-
-        # cv2.imshow('Detected', np.hstack((img,output)))
-
-                # cv2.imshow('Masked', output)
-                # cv2.waitKey(3)
-  
-            #closing all open windows 
-            # cv2.destroyAllWindows() 
-
-            # print(((sim.checkDistance(simTip, human_hand_right, 0))[2]))
-            # result, distance_left, objectPair = sim.checkDistance(simTip, human_hand_right, 0)
-            # print("distance is", distance_left)
-            
+ 
             client.step()
 
             _, distance_left, _ = sim.checkDistance(simTip, human_hand_right, 0)
@@ -289,14 +170,6 @@ class Simulation(FloatProblem):
             if (distance_left[6] < dist):
                 dist = distance_left[6]
             
-            
-            # if dist < 1.1:
-            #     print(solution.variables)
-
-            
-            # time.sleep(0.1)
-            
-            # print(dist, sim.getSimulationTime()
         if (dist < 0.05) and (jointspeedRobot <= 0):
             with open("result_GA.txt", 'a') as output:
                 output.write("False_fail: ")
@@ -331,8 +204,6 @@ class Simulation(FloatProblem):
         #to set default light A to on, and then it's diffuse and specular components to their defualt
         sim.setLightParameters(lightHandleA, 1 , [0, 0, 0], [0.25, 0.25, 0.25], [0.5, 0.5, 0.5])
         sim.stopSimulation()         
-            # return solution
-            # print(solution.variables)
 
         # first column saves the current fitness value
         simdata.append(solution.objectives[0])
@@ -344,16 +215,8 @@ class Simulation(FloatProblem):
         with open('run_details_GA.csv', 'a', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(simdata)
-        # with open("run_details.txt", 'a') as runfile:
-        #     runfile.write("Fitness: "+str(solution.objectives[0])+'\n')
-        #     runfile.write("Simulation time: "+str(time.time() - startTime)+'\n')
 
         return solution
-                
-        # except:
-            # print('Program ended')
-            # sim.stopSimulation()
-            # exit()
     
     def get_name(self):
         return 'Simulation problem'
@@ -380,8 +243,6 @@ def main():
     algorithm.run()
     result = algorithm.get_result()
 
-    # simdataCollection = numpy.array(simdataCollection)
-    # numpy.savetxt("run_details.csv", simdataCollection, delimiter = ",")
 
     print("Algorithm: {}".format(algorithm.get_name()))
     print("Problem: {}".format(problem.get_name()))
